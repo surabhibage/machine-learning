@@ -1,0 +1,12 @@
+# Ignore virtual environments anywhere in this repo
+**/.venv/
+
+# Python generated files
+__pycache__/
+*.pyc
+
+# PyCharm
+.idea/
+
+# macOS
+.DS_Store
