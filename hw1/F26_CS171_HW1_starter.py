@@ -59,11 +59,12 @@ print("=" * 50)
 # TODO: Create a KNeighborsClassifier with n_neighbors=3
 #       and fit it on X_train, y_train.
 #
-
+trained_model = KNeighborsClassifier(n_neighbors=3).fit(X_train, y_train)
 
 # TODO: Use the model to predict labels for X_test.
 #
-
+predictions3 = trained_model.predict(X_test)
+# print(predictions3) # the return type is nd.array
 
 # Print predicted vs true (this code is provided -- just uncomment it
 # after you have 'predictions3' ready):
@@ -84,7 +85,9 @@ print("=" * 50)
 #       Hint: (predictions3 != y_test) gives True for each mistake.
 #             Use .sum() to count them.
 #
-
+incorrect_labels = (predictions3 != y_test).astype(int) # type nd.array
+#incorrect_labels = [int(l) for l in labels]
+print(f'Number of incorrect labels for k = 3: ' + str(sum(incorrect_labels)))
 
 print()
 
@@ -99,6 +102,10 @@ print("=" * 50)
 # TODO: Create KNN with k=1, fit, predict, print predicted vs true,
 #       count mistakes. Same steps as above.
 
+predictions1 = KNeighborsClassifier(n_neighbors=1).fit(X_train, y_train).predict(X_test)
+incorrect_labels = (predictions1 != y_test).astype(int) # type nd.array
+print(f'Number of incorrect labels for k = 1: ' + str(sum(incorrect_labels)))
+
 print()
 
 print("=" * 50)
@@ -107,6 +114,10 @@ print("=" * 50)
 
 # TODO: Create KNN with k=7, fit, predict, print predicted vs true,
 #       count mistakes. Same steps as above.
+
+predictions7 = KNeighborsClassifier(n_neighbors=7).fit(X_train, y_train).predict(X_test)
+incorrect_labels = (predictions7 != y_test).astype(int) # type nd.array
+print(f'Number of incorrect labels for k = 7: ' + str(sum(incorrect_labels)))
 
 print()
 
@@ -122,10 +133,18 @@ print("=" * 50)
 #
 # (a) Which value of k (1, 3, or 7) made the fewest mistakes
 #     on the test set?
-#
+
+# ANSWER: k = 7 made the fewest number of mistakes (2 mistakes) compared to k = 1 and k = 3
+
 # (b) When k = 1, the model gets every training example correct
 #     by definition. Does it also make the fewest mistakes on
 #     the test set? What does this tell you?
-#
+
+# ANSWER: No, k = 1 model doesn't make the fewest number of mistakes on the test set. In fact, it makes the largest number of mistakes, ie 5.
+# This tells us that for this particular situation given the training data, the more neighbors we take into consideration, the better/more accurate are our results.
+
 # (c) In 1-2 sentences, what is the trade-off in choosing
 #     a small k vs a large k?
+
+# ANSWER: Small k values: Results are less accurate, but computation is faster.
+# Large k value: Results are more accurate, however, computation is slower. Choosing large values for k could also lead to overfitting?
