@@ -64,12 +64,9 @@ trained_model = KNeighborsClassifier(n_neighbors=3).fit(X_train, y_train)
 # TODO: Use the model to predict labels for X_test.
 #
 predictions3 = trained_model.predict(X_test)
-# print(predictions3) # the return type is nd.array
-
-# Print predicted vs true (this code is provided -- just uncomment it
-# after you have 'predictions3' ready):
-#
-
+print(f"Predicted Values: " + str(predictions3)) # the return type is nd.array
+print(f"True Values: " + str(y_test))
+# Print predicted vs true (this code is provided -- just uncomment it after you have 'predictions3' ready):
 
 print()
 
@@ -108,9 +105,6 @@ print(f'Number of incorrect labels for k = 1: ' + str(sum(incorrect_labels)))
 
 print()
 
-print("=" * 50)
-print("STEP 4: KNN with k = 7")
-print("=" * 50)
 
 # TODO: Create KNN with k=7, fit, predict, print predicted vs true,
 #       count mistakes. Same steps as above.
@@ -141,10 +135,11 @@ print("=" * 50)
 #     the test set? What does this tell you?
 
 # ANSWER: No, k = 1 model doesn't make the fewest number of mistakes on the test set. In fact, it makes the largest number of mistakes, ie 5.
-# This tells us that for this particular situation given the training data, the more neighbors we take into consideration, the better/more accurate are our results.
+# This is because taking small values for k overfits the model and doesn't perform well on the training data.
 
 # (c) In 1-2 sentences, what is the trade-off in choosing
 #     a small k vs a large k?
 
-# ANSWER: Small k values: Results are less accurate, but computation is faster.
-# Large k value: Results are more accurate, however, computation is slower. Choosing large values for k could also lead to overfitting?
+# ANSWER: Small k values: Sensitive to outliers, but fits well on the training data. However, this could also cause overfitting leading to bad results on the test set.
+# Large k value: Robust to outliers, but might over generalize and underfit for the test set.
+# Hence, a good middle ground can be chosen.
