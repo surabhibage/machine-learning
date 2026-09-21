@@ -56,6 +56,13 @@ print("STEP 1: Fit the model")
 print("-" * 55)
 
 # YOUR CODE HERE
+linear_model_fit = LinearRegression().fit(X_train_r, y_train_r)
+# intercept
+print(f"Intercept: {linear_model_fit.intercept_}")
+# coefficients, this is the slope of the equation
+print(f"Coefficients: {linear_model_fit.coef_}")
+# full equation
+print(f"Full Equation: Y = {linear_model_fit.intercept_} + {linear_model_fit.coef_[0]} * BMI + {linear_model_fit.coef_[1]} * Serum_s5")
 
 print()
 
@@ -72,9 +79,11 @@ print("STEP 2: Predict and compare")
 print("-" * 55)
 
 # YOUR CODE HERE
-
+true_values = y_test_r
+predicted_values = linear_model_fit.predict(X_test_r)
+print(f"True Values: {true_values[:10]}")
+print(f"Predicted Values: {predicted_values[:10]}")
 print()
-
 
 # =============================================================
 #  STEP 3: Compute MSE and MAE (10 points)
@@ -88,6 +97,16 @@ print("STEP 3: Compute MSE and MAE")
 print("-" * 55)
 
 # YOUR CODE HERE
+# Computing MSE
+MSE = np.sum((true_values - predicted_values) ** 2) / len(true_values)
+print(f"MSE: {MSE}")
+
+# Computing MAE
+MAE = np.sum(np.abs(true_values - predicted_values)) / len(true_values)
+print(f"MAE: {MAE}")
+
+max_abs_error = np.max(np.abs(true_values - predicted_values))
+print(f"Maximum Absolute Error: {max_abs_error}")
 
 print()
 
@@ -147,6 +166,17 @@ print("STEP 5: Baseline (no penalty)")
 print("-" * 55)
 
 # YOUR CODE HERE
+standard_linear_model = LinearRegression().fit(Z_train, y_train_a)
+
+# coefficients, this is the slope of the equation
+for i in range(len(all_names)):
+    print(f"Feature: {all_names[i]} and coefficient is {standard_linear_model.coef_[i]}")
+
+print(f"Sum of the absolute values of the coefficients: {np.sum(np.abs(standard_linear_model.coef_))}")
+
+# MSE's
+print(f"Training MSE: {np.sum((y_train_a - standard_linear_model.predict(Z_train)) ** 2) / len(y_train_a)}")
+print(f"Test MSE: {np.sum((y_test_a - standard_linear_model.predict(Z_test)) ** 2) / len(y_test_a)}")
 
 print()
 
@@ -168,7 +198,37 @@ ridge_alphas = [1, 10, 100, 1000]
 lasso_alphas = [0.1, 1, 5, 20]
 
 # YOUR CODE HERE
+print("Ridge: ")
+for alpha in ridge_alphas:
+    model = Ridge(alpha=alpha).fit(Z_train, y_train_a)
+    print(f"Sum of the absolute values of the coefficients: {np.sum(np.abs(model.coef_))}")
+    print(f"Number of coefficients that are exactly 0: {np.sum(model.coef_ == 0)}")
+    features_are_0 = [all_names[i] for i in range(len(all_names)) if model.coef_[i] == 0]
+    print(f"Names of features that are exactly 0: {features_are_0}")
+    print(f"Training MSE: {np.sum((y_train_a - model.predict(Z_train)) ** 2) / len(y_train_a)}")
+    print(f"Test MSE: {np.sum((y_test_a - model.predict(Z_test)) ** 2) / len(y_test_a)}")
+    print()
 
+print("Lasso: ")
+for alpha in lasso_alphas:
+    model = Lasso(alpha=alpha, max_iter=100000).fit(Z_train, y_train_a)
+    print(f"Sum of the absolute values of the coefficients: {np.sum(np.abs(model.coef_))}")
+    print(f"Number of coefficients that are exactly 0: {np.sum(model.coef_ == 0)}")
+    features_are_0 = [all_names[i] for i in range(len(all_names)) if model.coef_[i] == 0]
+    print(f"Names of features that are exactly 0: {features_are_0}")
+    print(f"Training MSE: {np.sum((y_train_a - model.predict(Z_train)) ** 2) / len(y_train_a)}")
+    print(f"Test MSE: {np.sum((y_test_a - model.predict(Z_test)) ** 2) / len(y_test_a)}")
+    print()
+
+print("Ridge Coefficients: ")
+ridge_model = Ridge(alpha=1000).fit(Z_train, y_train_a)
+for i in range(len(all_names)):
+    print(f"Feature: {all_names[i]} and coefficient is {ridge_model.coef_[i]}")
+print()
+print("Lasso Coefficients: ")
+lasso_model = Lasso(alpha=20).fit(Z_train, y_train_a)
+for i in range(len(all_names)):
+    print(f"Feature: {all_names[i]} and coefficient is {lasso_model.coef_[i]}")
 print()
 
 
