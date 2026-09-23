@@ -286,7 +286,21 @@ print("STEP 8: Fit the models")
 print("-" * 55)
 
 # YOUR CODE HERE
+model_default =LogisticRegression(max_iter=10000).fit(X_train_c, y_train_c)
+model_strong = LogisticRegression(max_iter=10000, C=0.01).fit(X_train_c, y_train_c)
 
+# print the intercept, the coefficient of each feature, and the sum of the absolute values of the coefficients
+print("Details for model_default:")
+print()
+print(f"Intercept: {model_default.intercept_}")
+print(f"Coefficients: {model_default.coef_}")
+print(f"Sum of the absolute values of the coefficients: {np.sum(np.abs(model_default.coef_))}")
+print()
+print("Details for model_strong:")
+print()
+print(f"Intercept: {model_strong.intercept_}")
+print(f"Coefficients: {model_strong.coef_}")
+print(f"Sum of the absolute values of the coefficients: {np.sum(np.abs(model_strong.coef_))}")
 print()
 
 
@@ -304,6 +318,7 @@ print("STEP 9: Predict and evaluate")
 print("-" * 55)
 
 # YOUR CODE HERE
+
 
 print()
 
