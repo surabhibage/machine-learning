@@ -8,6 +8,7 @@ each step.
 """
 
 import numpy as np
+import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression, Ridge, Lasso, LogisticRegression
 from sklearn.preprocessing import StandardScaler
@@ -117,7 +118,8 @@ print()
 print("-" * 55)
 print("STEP 4: Interpretation")
 print("-" * 55)
-
+print()
+print('Written answers in other PDF file')
 # (No code needed -- answer in your PDF report)
 
 print()
@@ -200,6 +202,7 @@ lasso_alphas = [0.1, 1, 5, 20]
 # YOUR CODE HERE
 print("Ridge: ")
 for alpha in ridge_alphas:
+    print(f'Alpha = {alpha}')
     model = Ridge(alpha=alpha).fit(Z_train, y_train_a)
     print(f"Sum of the absolute values of the coefficients: {np.sum(np.abs(model.coef_))}")
     print(f"Number of coefficients that are exactly 0: {np.sum(model.coef_ == 0)}")
@@ -211,6 +214,7 @@ for alpha in ridge_alphas:
 
 print("Lasso: ")
 for alpha in lasso_alphas:
+    print(f'Alpha = {alpha}')
     model = Lasso(alpha=alpha, max_iter=100000).fit(Z_train, y_train_a)
     print(f"Sum of the absolute values of the coefficients: {np.sum(np.abs(model.coef_))}")
     print(f"Number of coefficients that are exactly 0: {np.sum(model.coef_ == 0)}")
@@ -220,12 +224,14 @@ for alpha in lasso_alphas:
     print(f"Test MSE: {np.sum((y_test_a - model.predict(Z_test)) ** 2) / len(y_test_a)}")
     print()
 
-print("Ridge Coefficients: ")
+print("Part (c)")
+print()
+print("Ridge Coefficients at alpha = 1000: ")
 ridge_model = Ridge(alpha=1000).fit(Z_train, y_train_a)
 for i in range(len(all_names)):
     print(f"Feature: {all_names[i]} and coefficient is {ridge_model.coef_[i]}")
 print()
-print("Lasso Coefficients: ")
+print("Lasso Coefficients at alpha = 20: ")
 lasso_model = Lasso(alpha=20).fit(Z_train, y_train_a)
 for i in range(len(all_names)):
     print(f"Feature: {all_names[i]} and coefficient is {lasso_model.coef_[i]}")
@@ -238,7 +244,8 @@ print()
 print("-" * 55)
 print("STEP 7: Regularization questions")
 print("-" * 55)
-
+print()
+print('Written answers in other PDF file')
 # (No code needed -- answer in your PDF report)
 
 print()
@@ -318,7 +325,50 @@ print("STEP 9: Predict and evaluate")
 print("-" * 55)
 
 # YOUR CODE HERE
+print("Part (a)")
+print()
+predicted_model_default = model_default.predict(X_test_c)
+print(f"Predicted labels: {predicted_model_default[:15]}")
+print(f"True labels:      {y_test_c[:15]}")
+print()
 
+print("Part (b)")
+print()
+
+print(f"Number of mistakes on the test set for model_default: {sum(predicted_model_default != y_test_c)}")
+print(f"Number of correct predictions on the test set for model_default: {sum(predicted_model_default == y_test_c)}")
+
+print()
+
+print(f"Number of mistakes on the test set for model_strong: {sum(model_strong.predict(X_test_c) != y_test_c)}")
+print(f"Number of correct predictions on the test set for model_strong: {sum(model_strong.predict(X_test_c) == y_test_c)}")
+
+print()
+
+print("Part (c)")
+print()
+
+print(f"Mistakes on the train set for model_default: {sum(model_default.predict(X_train_c) != y_train_c)}")
+print(f"Mistakes on the test set for model_default: {sum(model_default.predict(X_test_c) != y_test_c)}")
+
+print()
+
+print(f"Percentage of mistakes on model_default train set: {(sum(model_default.predict(X_train_c) != y_train_c) / len(y_train_c)) * 100}")
+print(f"Percentage of mistakes on model_default on test set: {(sum(model_default.predict(X_test_c) != y_test_c) / len(y_test_c)) * 100}")
+
+print()
+
+print("Part (d)")
+print()
+
+predicted_proa = model_default.predict_proba(X_test_c)
+p_malignant = predicted_proa[:, 0]
+p_benign = predicted_proa[:, 1]
+
+table = {'true label' : y_test_c, 'predicted label' : model_default.predict(X_test_c), 'P(malignant)' : p_malignant, 'P(benign)' : p_benign}
+df_predictions = pd.DataFrame(table)
+print(df_predictions[:10])
+# print(df_predictions[df_predictions['predicted label'] != df_predictions['true label']])
 
 print()
 
@@ -328,5 +378,8 @@ print()
 # =============================================================
 print("-" * 55)
 print("STEP 10: Observations")
+print()
+print('Written answers in other PDF file')
+print()
 print("-" * 55)
 
